@@ -1,4 +1,4 @@
-package fr.patounes.hashcode.pizza.pojo;
+package fr.patounes.hashcode.pizza.data;
 
 public class Cell {
     private int x;

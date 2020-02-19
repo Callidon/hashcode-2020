@@ -1,9 +1,8 @@
 package fr.patounes.hashcode.pizza;
 
-import fr.patounes.hashcode.pizza.pojo.Pizza;
-import fr.patounes.hashcode.pizza.pojo.Slice;
+import fr.patounes.hashcode.pizza.data.Pizza;
+import fr.patounes.hashcode.pizza.data.Slice;
 
-import java.util.LinkedList;
 import java.util.List;
 
 public interface PizzaCutter {

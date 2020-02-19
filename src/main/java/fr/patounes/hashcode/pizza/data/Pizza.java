@@ -1,6 +1,4 @@
-package fr.patounes.hashcode.pizza.pojo;
-
-import fr.patounes.hashcode.pizza.pojo.Cell;
+package fr.patounes.hashcode.pizza.data;
 
 import java.util.HashMap;
 import java.util.Map;

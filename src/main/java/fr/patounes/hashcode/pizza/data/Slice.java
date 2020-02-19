@@ -1,4 +1,4 @@
-package fr.patounes.hashcode.pizza.pojo;
+package fr.patounes.hashcode.pizza.data;
 
 public class Slice {
     private int startX;

@@ -1,11 +1,13 @@
 package fr.patounes.hashcode.pizza;
 
-import fr.patounes.hashcode.pizza.pojo.Cell;
-import fr.patounes.hashcode.pizza.pojo.Ingredient;
-import fr.patounes.hashcode.pizza.pojo.Pizza;
+import fr.patounes.hashcode.pizza.data.Cell;
+import fr.patounes.hashcode.pizza.data.Ingredient;
+import fr.patounes.hashcode.pizza.data.Pizza;
+import fr.patounes.hashcode.pizza.data.Slice;
 
 import java.io.BufferedReader;
 import java.io.FileReader;
+import java.util.List;
 
 public class PizzaParser {
     public static Pizza fromTextFile(String path) {
@@ -45,6 +47,14 @@ public class PizzaParser {
         } catch (Exception e) {
             e.printStackTrace();
             return null;
+        }
+    }
+
+    public static void printSlices(List<Slice> slices) {
+        System.out.println(slices.size());
+        for(Slice slice: slices) {
+            String line = String.format("%d %d %d %d", slice.getStartX(), slice.getEndX(), slice.getStartY(), slice.getEndY());
+            System.out.println(line);
         }
     }
 }

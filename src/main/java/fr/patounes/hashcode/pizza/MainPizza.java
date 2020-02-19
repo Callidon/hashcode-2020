@@ -1,7 +1,7 @@
 package fr.patounes.hashcode.pizza;
 
-import fr.patounes.hashcode.pizza.pojo.Pizza;
-import fr.patounes.hashcode.pizza.pojo.Slice;
+import fr.patounes.hashcode.pizza.data.Pizza;
+import fr.patounes.hashcode.pizza.data.Slice;
 import picocli.CommandLine;
 
 import java.util.List;
@@ -24,7 +24,7 @@ public class MainPizza implements Callable<Integer> {
         List<Slice> slices = cutter.cutPizza(pizza);
 
         // print solutions
-        SolutionWriter.printSlices(slices);
+        PizzaParser.printSlices(slices);
         return 0;
     }
 
