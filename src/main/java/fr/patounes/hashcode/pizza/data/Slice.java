@@ -44,4 +44,12 @@ public class Slice {
     public void setEndY(int endY) {
         this.endY = endY;
     }
+
+    public Slice merge(Slice other) {
+        int startX = Math.min(this.startX, other.getStartX());
+        int endX = Math.max(this.endX, other.getEndX());
+        int startY = Math.min(this.startY, other.getStartY());
+        int endY = Math.max(this.endY, other.getEndY());
+        return new Slice(startX, endX, startY, endY);
+    }
 }
