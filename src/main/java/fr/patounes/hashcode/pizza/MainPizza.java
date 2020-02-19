@@ -29,8 +29,9 @@ public class MainPizza implements Callable<Integer> {
         System.out.println("----------------");
         for(String inputFile: files) {
             String fileName = Paths.get(inputFile).getFileName().toString();
-            System.out.println("Processing file " + fileName);
             String outputFile = Paths.get(outputDirectory, fileName + ".out").toString();
+
+            System.out.println("Processing file " + fileName);
             // read input
             Pizza pizza = PizzaParser.fromTextFile(inputFile);
 
