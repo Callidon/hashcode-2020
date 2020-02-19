@@ -63,7 +63,5 @@ public class PizzaParser {
         } catch (UnsupportedEncodingException | FileNotFoundException e) {
             e.printStackTrace();
         }
-
-
     }
 }
