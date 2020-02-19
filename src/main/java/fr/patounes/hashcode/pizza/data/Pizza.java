@@ -6,16 +6,16 @@ import java.util.Map;
 public class Pizza {
     private int numRows;
     private int numColumns;
-    private int minCellsPerSlice;
+    private int minEachIngredientPerSlice;
     private int maxCellsPerSlice;
     private Map<String, Cell> cells;
 
-    public Pizza(int numRows, int numColumns, int minCellsPerSlice, int maxCellsPerSlice) {
+    public Pizza(int numRows, int numColumns, int minEachIngredientPerSlice, int maxCellsPerSlice) {
         this.numRows = numRows;
         this.numColumns = numColumns;
-        this.minCellsPerSlice = minCellsPerSlice;
+        this.minEachIngredientPerSlice = minEachIngredientPerSlice;
         this.maxCellsPerSlice = maxCellsPerSlice;
-        this.cells = new HashMap<String, Cell>();
+        this.cells = new HashMap<>();
     }
 
     public int getNumRows() {
@@ -34,12 +34,12 @@ public class Pizza {
         this.numColumns = numColumns;
     }
 
-    public int getMinCellsPerSlice() {
-        return minCellsPerSlice;
+    public int getMinEachIngredientPerSlice() {
+        return minEachIngredientPerSlice;
     }
 
-    public void setMinCellsPerSlice(int minCellsPerSlice) {
-        this.minCellsPerSlice = minCellsPerSlice;
+    public void setMinEachIngredientPerSlice(int minEachIngredientPerSlice) {
+        this.minEachIngredientPerSlice = minEachIngredientPerSlice;
     }
 
     public int getMaxCellsPerSlice() {

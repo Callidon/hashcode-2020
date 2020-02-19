@@ -3,6 +3,7 @@
 .idea/
 *.iml
 target/
+src/main/resources/output
 
 # Log file
 *.log

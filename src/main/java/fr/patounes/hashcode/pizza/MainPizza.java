@@ -4,27 +4,46 @@ import fr.patounes.hashcode.pizza.data.Pizza;
 import fr.patounes.hashcode.pizza.data.Slice;
 import picocli.CommandLine;
 
+import java.io.File;
+import java.nio.file.Paths;
 import java.util.List;
 import java.util.concurrent.Callable;
 
 @CommandLine.Command(name = "pizza-cutter", description= "cuts some pizzas")
 public class MainPizza implements Callable<Integer> {
 
-    @CommandLine.Parameters(index = "0", description = "Path to the input pizza file")
-    private String filePath = "src/main/resources/pizza.txt";
+    @CommandLine.Parameters(description = "Path to the folder that contains files")
+    private String[] files;
+
+    @CommandLine.Option(names = "-o", defaultValue = "src/main/resources/output/", description = "Output directory")
+    private String outputDirectory;
 
     @Override
     public Integer call() throws Exception {
-        // read input
-        Pizza pizza = PizzaParser.fromTextFile(filePath);
-        //System.out.println(pizza.toString());
+        System.out.println("Initialization");
+        // init output folder (if not exists)
+        File output = new File(outputDirectory);
+        output.mkdirs();
 
-        // solve problem
-        PizzaCutter cutter = new SimplePizzaCutter();
-        List<Slice> slices = cutter.cutPizza(pizza);
+        // process each file
+        System.out.println("----------------");
+        for(String inputFile: files) {
+            String fileName = Paths.get(inputFile).getFileName().toString();
+            System.out.println("Processing file " + fileName);
+            String outputFile = Paths.get(outputDirectory, fileName + ".out").toString();
+            // read input
+            Pizza pizza = PizzaParser.fromTextFile(inputFile);
 
-        // print solutions
-        PizzaParser.printSlices(slices);
+            // solve problem
+            PizzaCutter cutter = new SimplePizzaCutter();
+            List<Slice> slices = cutter.cutPizza(pizza);
+
+            // print solutions
+            System.out.println("Writing results to " + outputFile);
+            PizzaParser.printSlices(slices, outputFile);
+            System.out.println("----------------");
+        }
+        System.out.println("Done");
         return 0;
     }
 

@@ -5,8 +5,7 @@ import fr.patounes.hashcode.pizza.data.Ingredient;
 import fr.patounes.hashcode.pizza.data.Pizza;
 import fr.patounes.hashcode.pizza.data.Slice;
 
-import java.io.BufferedReader;
-import java.io.FileReader;
+import java.io.*;
 import java.util.List;
 
 public class PizzaParser {
@@ -21,10 +20,10 @@ public class PizzaParser {
                 // first line: rows cols minCellsPerSlice maxCellsPerSlice
                 int rows = Integer.parseInt(firstLine[0]);
                 int cells = Integer.parseInt(firstLine[1]);
-                int minCellsPerSlice = Integer.parseInt(firstLine[2]);
+                int minIngredientPerSlice = Integer.parseInt(firstLine[2]);
                 int maxCellsPerSlice = Integer.parseInt(firstLine[3]);
 
-                pizza = new Pizza(rows, cells, minCellsPerSlice, maxCellsPerSlice);
+                pizza = new Pizza(rows, cells, minIngredientPerSlice, maxCellsPerSlice);
 
                 // generate cells
                 for (int i = 0; i < pizza.getNumRows(); i++) {
@@ -50,11 +49,21 @@ public class PizzaParser {
         }
     }
 
-    public static void printSlices(List<Slice> slices) {
-        System.out.println(slices.size());
-        for(Slice slice: slices) {
-            String line = String.format("%d %d %d %d", slice.getStartX(), slice.getEndX(), slice.getStartY(), slice.getEndY());
-            System.out.println(line);
+    public static void printSlices(List<Slice> slices, String outputPath) throws IOException {
+        File file = new File(outputPath);
+        // create file beforehand
+        file.createNewFile();
+        try (PrintWriter writer = new PrintWriter(file, "UTF-8")) {
+            writer.println(slices.size());
+
+            for(Slice slice: slices) {
+                String line = String.format("%d %d %d %d", slice.getStartX(), slice.getEndX(), slice.getStartY(), slice.getEndY());
+                writer.println(line);
+            }
+        } catch (UnsupportedEncodingException | FileNotFoundException e) {
+            e.printStackTrace();
         }
+
+
     }
 }
