@@ -1,5 +1,6 @@
 package fr.patounes.hashcode.books.data;
 
+import java.util.Collections;
 import java.util.LinkedList;
 import java.util.List;
 
@@ -32,6 +33,17 @@ public class Library {
 
     public void setBooks(List<Book> books) {
         this.books = books;
+    }
+
+    public void sortBook() {
+        Collections.sort(books, ((b1, b2) -> {
+            if (b1.getScore() == b2.getScore()) {
+                return 0;
+            } else if (b1.getScore() > b2.getScore()) {
+                return -1;
+            }
+            return 1;
+        }));
     }
 
     public int getNbBooks() {

@@ -2,10 +2,7 @@ package fr.patounes.hashcode.books;
 
 import fr.patounes.hashcode.books.data.*;
 
-import java.util.HashMap;
-import java.util.LinkedList;
-import java.util.List;
-import java.util.Map;
+import java.util.*;
 
 public class SimpleSolver implements BookSolver {
 
@@ -50,6 +47,7 @@ public class SimpleSolver implements BookSolver {
 
     @Override
     public Output solve(Problem problem) {
+        problem.sort();
         // solve
         for(int jour = 0; jour < problem.getDuration() - 1; jour++) {
             signup(problem);

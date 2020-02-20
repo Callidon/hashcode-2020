@@ -51,6 +51,7 @@ public class BookParser {
                         library.addBook(new Book(bookID, scoresPerBooks.get(bookID)));
                     }
 
+                    library.sortBook();
                     problem.addLibrary(library);
                 }
 

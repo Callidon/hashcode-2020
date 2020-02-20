@@ -1,5 +1,6 @@
 package fr.patounes.hashcode.books.data;
 
+import java.util.Collections;
 import java.util.LinkedList;
 import java.util.List;
 
@@ -46,6 +47,25 @@ public class Problem {
 
     public Library getLibrary(int index) {
         return this.libraries.get(index);
+    }
+
+    private int computeScore(Library library) {
+        // int score = (duration - library.getSignupDuration()) + library.getNbParallelScanning();
+        int totalBookScore = library.getBooks().stream().map(book -> book.getScore()).reduce((x, y) -> x + y).get();
+        int scorePerDay = totalBookScore / library.getNbParallelScanning();
+        //return scorePerDay / library.getSignupDuration();
+        return scorePerDay * (duration - library.getSignupDuration());
+    }
+
+    public void sort() {
+        Collections.sort(libraries, (l1, l2) -> {
+            if (computeScore(l1) == computeScore(l2)) {
+                return 0;
+            } else if (computeScore(l1) > computeScore(l2)) {
+                return -1;
+            }
+            return 1;
+        });
     }
 
     @Override
