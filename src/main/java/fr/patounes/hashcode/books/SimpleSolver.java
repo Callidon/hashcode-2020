@@ -3,6 +3,7 @@ package fr.patounes.hashcode.books;
 import fr.patounes.hashcode.books.data.*;
 
 import java.util.*;
+import java.util.stream.Collectors;
 
 public class SimpleSolver implements BookSolver {
 
@@ -11,6 +12,9 @@ public class SimpleSolver implements BookSolver {
     private int signupDays;
     private List<Library> signup;
     private Map<Integer, Integer> nbScannedPerLibrary;
+    private Set<Integer> seenBefore;
+    private double targetRatio;
+    private double minRatio;
 
     public SimpleSolver() {
         onSignup = null;
@@ -18,20 +22,40 @@ public class SimpleSolver implements BookSolver {
         signupDays = 0;
         signup = new LinkedList<>();
         nbScannedPerLibrary = new HashMap<>();
+        seenBefore = new HashSet<>();
+        targetRatio = 0.99;
+        minRatio = 0.90;
     }
 
     private void signup(Problem problem) {
         if (signupIndex < problem.getNbLibraries()) {
             if (onSignup == null) {
-                onSignup = problem.getLibrary(signupIndex);
+                // onSignup = problem.getLibrary(signupIndex);
+                for(int i = signupIndex; i < problem.getNbLibraries(); i++) {
+                    Library current = problem.getLibrary(i);
+                    Set<Integer> books = current.getBooks().stream().map(b -> b.getId()).collect(Collectors.toSet());
+                    books.removeAll(seenBefore);
+                    int ratio = books.size() / current.getNbBooks();
+                    if (ratio >= targetRatio && current.getSignupDuration() < problem.getDuration() * 0.2) {
+                        onSignup = current;
+                        signupIndex = i;
+                        targetRatio -= (0.99 - minRatio) / problem.getDuration();
+                        break;
+                    }
+                }
+                if (onSignup == null) {
+                    problem.getLibrary(signupIndex);
+                }
             }
             signupDays++;
-            if (signupDays == onSignup.getSignupDuration()) {
-                signup.add(onSignup);
-                nbScannedPerLibrary.put(onSignup.getId(), 0);
-                signupIndex++;
-                signupDays = 0;
-                onSignup = null;
+            if (onSignup != null) {
+                if (signupDays == onSignup.getSignupDuration()) {
+                    signup.add(onSignup);
+                    nbScannedPerLibrary.put(onSignup.getId(), 0);
+                    signupIndex++;
+                    signupDays = 0;
+                    onSignup = null;
+                }
             }
         }
     }
@@ -40,7 +64,12 @@ public class SimpleSolver implements BookSolver {
         for(Library library: signup) {
             int parallelism = library.getNbParallelScanning();
             int scannedAlready = nbScannedPerLibrary.get(library.getId());
-            nbScannedPerLibrary.put(library.getId(), Math.min(scannedAlready + parallelism, library.getNbBooks()));
+
+            int x = Math.min(scannedAlready + parallelism, library.getNbBooks());
+            for(int i = scannedAlready; i < x; i++) {
+                seenBefore.add(library.getBook(i).getId());
+            }
+            nbScannedPerLibrary.put(library.getId(), x);
         }
     }
 
@@ -49,6 +78,7 @@ public class SimpleSolver implements BookSolver {
     public Output solve(Problem problem) {
         problem.sort();
         // solve
+        onSignup = problem.getLibrary(signupIndex);
         for(int jour = 0; jour < problem.getDuration() - 1; jour++) {
             signup(problem);
             scan(problem);
